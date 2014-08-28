@@ -30,9 +30,8 @@ public class UDPReceiver {
 					
 					parseThread.add(xml);
 					
-					System.out.println("½ÓÊÕµ½Êı¾İ´óĞ¡:" + xml.length());
-					System.out.println("½ÓÊÕµ½µÄÊı¾İÎª£º" + xml);
-					System.out.println("recevied message is ok.");
+					System.out.println("æ•°æ®é•¿åº¦ï¼š" + xml.length());
+					System.out.println("æ•°æ®å†…å®¹ï¼š" + xml);
 				}
 //				dgSocket.close();
 			} catch (Exception e1) {

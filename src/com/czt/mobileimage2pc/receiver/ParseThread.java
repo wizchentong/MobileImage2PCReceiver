@@ -33,15 +33,15 @@ public class ParseThread extends Thread {
 				}
 				continue;
 			}
-			//有数据， �?��用按插入时间顺序处理�?
+			//有数据， 按插入时间顺序处理
 			String xml = mXmlStrs.remove(0);
 			WizData data = parseXML(xml);
 			if(data == null){
-				//多尝试一�?
+				//多尝试一遍
 				data = parseXML(xml);
 			}
 			if(data == null){
-				//两次出错，丢�?
+				//两次出错，丢弃
 				continue;
 			}
 			
@@ -49,7 +49,7 @@ public class ParseThread extends Thread {
 			String fileName = data.fileName;
 			long fileLength = data.fileLength;
 			
-			//�?��就可以的情况下不必加入到多块处理策略中�?
+			//单块就可以的情况下不必加入到多块处理策略中
 			if(count == 1){
 				generateFile(data.fileData, fileName, fileLength);
 				continue;
@@ -67,7 +67,7 @@ public class ParseThread extends Thread {
 			if(dataList.size() >= count) {
 				
 				//已满
-				//先排�?
+				//先排序
 				Collections.sort(dataList, new Comparator<WizData>() {
 
 					@Override

@@ -20,6 +20,8 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import com.czt.mobileimage2pc.receiver.util.Base64;
+
 public class ParseThread extends Thread {
 	@Override
 	public void run() {

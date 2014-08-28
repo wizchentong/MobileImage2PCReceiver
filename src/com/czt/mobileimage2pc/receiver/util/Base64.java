@@ -1,4 +1,4 @@
-package com.czt.mobileimage2pc.receiver;
+package com.czt.mobileimage2pc.receiver.util;
 
 
 

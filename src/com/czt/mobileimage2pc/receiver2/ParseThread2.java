@@ -1,5 +1,6 @@
 package com.czt.mobileimage2pc.receiver2;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -8,6 +9,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
@@ -130,11 +132,11 @@ public class ParseThread2 extends Thread {
 	}
 	
 	private void generateFile(byte[] bytesArray, String fileName, long fileLength) {
-		FileOutputStream fos = null;
+		BufferedOutputStream fos = null;
 		File file = new File("d:/" + fileName);
 		try {
 			// Specify the file path here
-			fos = new FileOutputStream(file);
+			fos = new BufferedOutputStream(new FileOutputStream(file));
 			fos.write(bytesArray);
 			fos.flush();
 		} catch (IOException ioe) {
@@ -180,15 +182,22 @@ public class ParseThread2 extends Thread {
 		public void startElement(String uri, String localName, String qName,
 				Attributes attributes) throws SAXException {
 			currentTagName = qName ;
+			mStringBuilder = new StringBuilder();
 			if("file".equals(qName)){
 				mData = new WizFile();
 			}
 		}
-		
+		private StringBuilder mStringBuilder;
 		@Override
 		public void characters(char[] ch, int start, int length)
 				throws SAXException {
-			String str = new String(ch,start,length);
+			mStringBuilder.append(ch, start, length);
+		}
+	
+		@Override
+		public void endElement(String uri, String localName, String qName)
+				throws SAXException {
+			String str = mStringBuilder.toString();
 			if("guid".equals(currentTagName)){
 				mData.guid = str;
 			}else if("name".equals(currentTagName)){
@@ -204,11 +213,6 @@ public class ParseThread2 extends Thread {
 			}else if("data".equals(currentTagName)){
 				mData.data = Base64.decode(str);
 			}
-		}
-	
-		@Override
-		public void endElement(String uri, String localName, String qName)
-				throws SAXException {
 			currentTagName = "";
 		}
 	

@@ -20,15 +20,16 @@ public class UDPReceiver2 {
 			try {
 				DatagramSocket dgSocket = new DatagramSocket(18695);
 				byte[] by = new byte[2*1024];
-				ParseThread2 parseThread = new ParseThread2();
-				parseThread.start();
+				TCPReceiverThread tcpReceiverThread = new TCPReceiverThread();
+				tcpReceiverThread.start();
 				while (true) {
 					DatagramPacket packet = new DatagramPacket(by, by.length);
 					dgSocket.receive(packet);
-					String userName = new String(packet.getData(), 0, packet.getLength());
-					parseThread.add(packet.getAddress(), userName);
-					System.out.println("数据长度：" + userName.length());
-					System.out.println("数据内容：" + userName);
+					String userGuid = new String(packet.getData(), 0, packet.getLength());
+					tcpReceiverThread.add(packet.getAddress(), userGuid);
+					System.out.println("数据长度：" + userGuid.length());
+					System.out.println("数据内容：" + userGuid);
+					Thread.sleep(10000);
 				}
 //				dgSocket.close();
 			} catch (Exception e1) {

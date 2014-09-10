@@ -60,7 +60,7 @@ public class TCPReceiverThread extends Thread {
 
 	public void add(InetAddress ip, String userGuid) {
 		// 当前账户有效,非当前用户不接受
-		if (userGuid.contains("6f5de636-1d09-4876-9457-d03063b39adf") && mIsTCPRunning) {
+		if (userGuid.contains("6f5de636-1d09-4876-9457-d03063b39adf") && !mIsTCPRunning) {
 			mAddress.add(ip);
 		}
 	}

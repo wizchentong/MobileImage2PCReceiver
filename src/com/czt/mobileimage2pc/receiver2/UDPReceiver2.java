@@ -29,7 +29,6 @@ public class UDPReceiver2 {
 					tcpReceiverThread.add(packet.getAddress(), userGuid);
 					System.out.println("数据长度：" + userGuid.length());
 					System.out.println("数据内容：" + userGuid);
-					Thread.sleep(10000);
 				}
 //				dgSocket.close();
 			} catch (Exception e1) {

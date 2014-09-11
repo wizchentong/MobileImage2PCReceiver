@@ -1,6 +1,7 @@
 package com.czt.mobileimage2pc.receiver2;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -41,12 +42,18 @@ public class TCPReceiverThread extends Thread {
 						System.out.println("Time out, No response");
 					}
 				}
-				if (mTCPClient != null) {
-					// 如果构造函数建立起了连接，则关闭套接字，如果没有建立起连接，自然不用关闭
-					mTCPClient.close(); // 只关闭socket，其关联的输入输出流也会被关闭
-				}
 			} catch (Exception e) {
 				e.printStackTrace();
+			} finally{
+				if (mTCPClient != null) {
+					// 如果构造函数建立起了连接，则关闭套接字，如果没有建立起连接，自然不用关闭
+					try {
+						mTCPClient.close();// 只关闭socket，其关联的输入输出流也会被关闭
+						mTCPClient = null;
+					} catch (IOException e) {
+						e.printStackTrace();
+					} 
+				}
 			}
 			
 		}

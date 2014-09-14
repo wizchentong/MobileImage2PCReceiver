@@ -19,7 +19,7 @@ public class UDPReceiver2 {
 		public void run() {
 			try {
 				DatagramSocket dgSocket = new DatagramSocket(18695);
-				byte[] by = new byte[2*1024];
+				byte[] by = new byte[1024];
 				TCPReceiverThread tcpReceiverThread = new TCPReceiverThread();
 				tcpReceiverThread.start();
 				while (true) {

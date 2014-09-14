@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +23,7 @@ public class TCPReceiverThread extends Thread {
 				}
 				continue;
 			}
-			
+
 			try {
 				mTCPClient = new Socket(mAddress.remove(0), 19586);
 				mTCPClient.setSoTimeout(10000);
@@ -32,19 +31,15 @@ public class TCPReceiverThread extends Thread {
 				BufferedReader buf = new BufferedReader(new InputStreamReader(
 						mTCPClient.getInputStream()));
 				while (true) {
-					try {
-						String str = buf.readLine();
-						if ("bye".equals(str)) {
-							break;
-						}
-						parseThread.add(str);
-					} catch (SocketTimeoutException e) {
-						System.out.println("Time out, No response");
+					String str = buf.readLine();
+					if ("bye".equals(str)) {
+						break;
 					}
+					parseThread.add(str);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
-			} finally{
+			} finally {
 				if (mTCPClient != null) {
 					// 如果构造函数建立起了连接，则关闭套接字，如果没有建立起连接，自然不用关闭
 					try {
@@ -52,10 +47,10 @@ public class TCPReceiverThread extends Thread {
 						mTCPClient = null;
 					} catch (IOException e) {
 						e.printStackTrace();
-					} 
+					}
 				}
 			}
-			
+
 		}
 	}
 
@@ -64,12 +59,14 @@ public class TCPReceiverThread extends Thread {
 
 	public void add(InetAddress ip, String userGuid) {
 		// 当前账户有效,非当前用户不接受
-		if (userGuid.contains("6f5de636-1d09-4876-9457-d03063b39adf") && !isTCPRunning()) {
+		if (userGuid.equals("6f5de636-1d09-4876-9457-d03063b39adf")
+				&& !isTCPRunning()) {
 			mAddress.add(ip);
 		}
 	}
-	private boolean isTCPRunning(){
-		if(mTCPClient != null && mTCPClient.isConnected()){
+
+	private boolean isTCPRunning() {
+		if (mTCPClient != null && mTCPClient.isConnected()) {
 			return true;
 		}
 		return false;
